@@ -1,0 +1,59 @@
+nav img{
+    max-width:64px ;
+    max-height: 64px;
+    object-fit: scale-down;
+    border-radius: 50%;
+
+}
+main{
+    text-align: center;
+}
+#codes{
+    width: 98%;
+    min-height: 280px;
+    border-radius: 16px;
+    border:1px double  rgba(105, 78, 78, 0.425)
+}
+#but{
+    display: flex;
+    justify-content: space-evenly;
+}
+#but button{
+    width: 47%;
+    border-radius: 16px;
+    border: 0px;
+    padding:12px ;
+    box-shadow: 0 5px 25px rgba(1 1 1 / 15%);
+}
+#rev{
+    background-color:rgb(139, 124, 124);
+    color: #fff;
+    
+}
+#play{
+    background-color: rgb(112, 144, 247);
+    color: blueviolet;
+}
+#ti{
+    padding: 10px;
+    border-bottom: 2px solid rgb(139, 124, 124);
+    margin: 8px 0px;
+    font-weight: bold;
+}
+#rel{
+    max-width: 100%;
+}
+.imgproj{
+    width: 338.48px;
+    height: 368px;
+}
+
+
+
+
+
+
+
+
+
+

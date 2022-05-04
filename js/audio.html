@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style> 
+    
+    main{
+        width: 360px;
+        
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    header{
+        text-align: center;
+        color:rgb(77, 45, 6) ;
+        height: 300px;
+    }
+    header img{
+        height: 140px;
+        margin-top: 20px;
+    }
+    header h2{
+        margin: 20px 0px;
+        font-size: 35px ;
+    }
+    header p{
+        font-size: 22px;
+    }
+    #content{
+        background-color: #c5bdbdb7 ;
+    }
+    #buttons{
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
+    }
+    #buttons img{
+        width: 45px;
+        height: 45px;
+        margin: 0 15px;
+    }
+    #volume{
+        text-align: center;
+    }
+    #volume input{
+        width: 80%;
+
+    }
+    input[type="range" i] {
+        -webkit-appearance: none;
+        height: 4px;
+        margin: 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background-color: #0e1e52;
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+
+    }
+    #volume h2{
+        margin: 15px 0;
+    }
+    #color{
+        text-align: center;
+        margin-top: 20px;
+    }
+    #color button{
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+    }
+    #color1{
+         background: linear-gradient(to right, #ff9966, #ff5e62);
+    }
+    #color2{
+        background: linear-gradient(to right, #1e48d1, #301e1e);
+    }
+    #color3{
+        background: linear-gradient(to right, #050505, #666060);
+    }
+    #color4{
+        background: linear-gradient(to right, #1898ee, #06e951);
+        
+    }
+
+    </style>
+</head>
+<body id="body">
+    <main id="player">
+        <header>
+            <img src="https://images-platform.99static.com/FCY98Yn5UDRBmQcpm4Sve3b1EP8=/0x0:1875x1875/500x500/top/smart/99designs-contests-attachments/83/83315/attachment_83315236">
+            <h2>live radio</h2>
+            <p id="title_audio">Radio 1</p>
+        </header>
+        <div id="content">
+            <article id="buttons"> 
+                <img src="img/lteli.png" id="back">
+                <img src="img/ply.webp" id="playpause">
+                <img src="img/next.webp" id="next">
+                <audio src="amon.mp3" id="audioFile" ></audio>
+            </article>
+
+            <article id="volume">
+                <h2>الصوت</h2>
+                <input type="range" id="volumeRnage">
+                <h2>السرعة</h2>
+                <input type="range" id="volumeSpeed" max="200" min="0">
+            </article>
+            <article id="color">
+                <button id="color1"></button>
+                <button id="color2"></button>
+                <button id="color3"></button>
+                <button id="color4"></button>
+            </article>
+             
+        </div>
+        
+    </main>
+
+    <script>
+        class Ply{
+            constructor(){
+                var heightMain = document.getElementById("player");
+                heightMain.style.height = screen.height + "px";
+                if(screen.width < 500){
+                    heightMain.style=screen.width+"px";
+                }
+
+                var heightDiv =document.getElementById("content");
+                heightDiv.style.height = screen.height-300 + "px";
+            }
+        }
+        onload=new Ply();
+        class Audio{
+            constructor(){
+                this.audioFile = document.getElementById("audioFile");
+                this.title_audio = document.getElementById("title_audio");
+                this.playpause = document.getElementById("playpause");
+                this.isPlayed;
+                this.playpause.addEventListener("click" , ()=>{
+                    this.play_pause();
+                })
+
+                this.names_radio=[];
+                this.names_radio[0]="الاذاعة الوطنية ";
+                this.names_radio[1]="الاذاعة تونس الثقافة ";
+                this.names_radio[2]="لاذاعة الشباب";
+
+                this.source_audio=[];
+                this.source_audio[0]="http://rtstream.tanitweb.com/nationale";
+                this.source_audio[1]="http://rtstream.tanitweb.com/culturelle";
+                this.source_audio[2]="http://rtstream.tanitweb.com/jeunes";
+                this.server=0;
+                this.setResource();
+                document.getElementById("next").addEventListener("click" ,()=>{
+                    if(this.server<this.source_audio.length-1){
+                        ++this.server;
+                        this.isPlayed=false;
+                    }else{
+                        this.server=0;
+                    }
+                    localStorage.setItem("position",this.server);
+                    this.setResource();
+
+                });
+                document.getElementById("back").addEventListener("click" ,()=>{
+                    if(this.server>0){
+                        --this.server;
+                        this.isPlayed=false;
+                    }else{
+                        this.server=this.source_audio.length-1;
+                    }
+                    localStorage.setItem("position",this.server);
+                    this.setResource();
+                });
+
+            }
+            setResource(){
+                if(localStorage.getItem("positon")!=null){
+                    this.server=localStorage.getItem("positon");
+                }
+                this.audioFile.src = this.source_audio[this.server];
+                this.title_audio.innerHTML = this.names_radio[this.server];
+                this.play_pause(); 
+            }
+            play_pause(){
+                if(this.isPlayed == false){
+                    this.audioFile.play(); 
+                    this.isPlayed=true ; 
+                    this.playpause.src = "img/pause.png"                
+
+                }else{
+                    this.audioFile.pause();
+                    this.isPlayed=false;
+                    this.playpause.src = "img/ply.webp"                
+
+                }
+
+            }
+        }
+        onload = new Audio();
+        class volume{
+            constructor(){
+                this.audio = document.getElementById("audioFile");
+                this.audio.volume = 0.5;
+                this.volumeRnage =document.getElementById("volumeRnage");
+                this.volumeRnage.addEventListener("change" , ()=>{
+                    this.audio.volume = this.volumeRnage.value/100;
+                })
+                this.volumeSpeed =document.getElementById("volumeSpeed");
+                this.audio.playbackRate = 1;
+                this.volumeSpeed.addEventListener("change" , ()=>{
+                    this.audio.playbackRate = this.volumeSpeed.value/100;
+                })
+
+            }
+        }
+        onload = new volume();
+        class Color{
+            constructor(){
+                this.color1 = document.getElementById("color1");
+                // this.select_color("color");
+                this.color1.addEventListener("click",()=>{
+                    this.selectColor("color1");
+                });
+                this.color2 = document.getElementById("color2");
+                this.color2.addEventListener("click",()=>{
+                    this.selectColor("color2");
+                });
+                this.color3 = document.getElementById("color3");
+                this.color3.addEventListener("click",()=>{
+                    this.selectColor("color3");
+                });
+                this.color4 = document.getElementById("color4");
+                this.color4.addEventListener("click",()=>{
+                    this.selectColor("color4");
+                });
+                if(localStorage.getItem("color"==null)){
+                    document.body.style.background = "linear-gradient(to right, #ff9966, #ff5e62)";
+                }
+                this.selectColor(localStorage.getItem("color"));
+            }
+            selectColor(color){
+                if(color=="color1"){
+                    document.body.style.background = "linear-gradient(to right, #ff9966, #ff5e62)";
+                }
+                else if(color=="color2"){
+                    document.body.style.background = "linear-gradient(to right, #1e48d1, #301e1e)";
+                }
+                else if(color=="color3"){
+                    document.body.style.background = "linear-gradient(to right, #050505, #666060)";
+                }
+                else if(color=="color4"){
+                    document.body.style.background = "linear-gradient(to right, #1898ee, #06e951)";
+                }
+                localStorage.setItem("color",color);
+            }
+        }
+        onload = new Color();
+    </script>
+</body>
+</html>
